@@ -23,7 +23,7 @@ public class Jokes {
 
     // starting jokes
     public static String[] init() {
-        final String[] jokesArray = {
+        final String[] jokesArray = { // final means that this variable cannot change. 
             "If you give someone a program... you will frustrate them for a day; if you teach them how to program... you will frustrate them for a lifetime.",
             "Q: Why did I divide sin by tan? A: Just cos.",
             "UNIX is basically a simple operating system... but you have to be a genius to understand the simplicity.",

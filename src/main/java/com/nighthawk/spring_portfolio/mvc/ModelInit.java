@@ -12,6 +12,8 @@ import com.nighthawk.spring_portfolio.mvc.note.Note;
 import com.nighthawk.spring_portfolio.mvc.note.NoteJpaRepository;
 import com.nighthawk.spring_portfolio.mvc.person.Person;
 import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
+import com.nighthawk.spring_portfolio.mvc.song.Song;
+import com.nighthawk.spring_portfolio.mvc.song.SongJpaRepository;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class ModelInit {
     @Autowired JokesJpaRepository jokesRepo;
     @Autowired NoteJpaRepository noteRepo;
     @Autowired PersonDetailsService personService;
+    @Autowired SongJpaRepository songRepo;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -47,6 +50,13 @@ public class ModelInit {
                     Note n = new Note(text, person);  // constructor uses new person as Many-to-One association
                     noteRepo.save(n);  // JPA Save                  
                 }
+            }
+
+            String[] songArray = Song.init();
+            for (String song : songArray) {
+                List<Song> songFound = songRepo.findBySongIgnoreCase(song);
+                if (songFound.size() == 0)
+                    songRepo.save(new Song(null, song, 0, 0));
             }
 
         };

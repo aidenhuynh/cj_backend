@@ -68,8 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 			// list the requests/endpoints need to be authenticated
 			.authorizeRequests()
-				.antMatchers("/mvc/person/update/**", "/mvc/person/delete/**").authenticated()
-				.antMatchers("/api/person/**").authenticated()
+				.antMatchers("/mvc/person/update/**", "/mvc/person/delete/**").permitAll()
+				.antMatchers("/api/person/**").permitAll()
 				.and()
 			// support cors
 			.cors().and()
