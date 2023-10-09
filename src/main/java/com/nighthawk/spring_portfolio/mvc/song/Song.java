@@ -21,7 +21,7 @@ public class Song {
     private int like;
     private int dislike;
 
-    // starting jokes
+    // starting songs
     public static String[] init() {
         final String[] songArray = { // final means that this variable cannot change. 
             "Bohemian Rhapsody - Queen",
@@ -38,7 +38,8 @@ public class Song {
             "Shape of You - Ed Sheeran",
             "Rolling in the Deep - Adele",
             "Livin' on a Prayer - Bon Jovi",
-            "Boogie Wonderland - Earth, Wind & Fire"
+            "Boogie Wonderland - Earth, Wind & Fire",
+            "Never Gonna Give You Up - Rick Astley"
         };
         return songArray;
     }
