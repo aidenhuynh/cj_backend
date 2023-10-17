@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 
 @RestController
@@ -22,6 +25,10 @@ public class HumanApiController {
     // Autowired enables Control to connect POJO Object through JPA
     @Autowired
     private HumanJpaRepository repository;
+    @Autowired  // Inject PasswordEncoder
+    private PasswordEncoder passwordEncoder;
+    Set<String> usedClassCodes = new HashSet<>();
+    
 
     /*
     GET List of People
@@ -36,6 +43,7 @@ public class HumanApiController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Human> getHuman(@PathVariable long id) {
+        
         Optional<Human> optional = repository.findById(id);
         if (optional.isPresent()) {  // Good ID
             Human human = optional.get();  // value from findByID
@@ -75,10 +83,36 @@ public class HumanApiController {
         } catch (Exception e) {
             return new ResponseEntity<>(dobString +" error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
         }
+        password = passwordEncoder.encode(password);
+        List<Human> humans = repository.findAll();
+        for (Human hman : humans){
+            usedClassCodes.add(hman.getClassCode());
+        }
+        String classCode = "";  
+        if (role.equals("Teacher")){
+
+            int CODE_LENGTH = 6; 
+            SecureRandom random = new SecureRandom();
+            BigInteger randomBigInt;
+            do {
+                randomBigInt = new BigInteger(50, random);
+                classCode = randomBigInt.toString(32).toUpperCase().substring(0, CODE_LENGTH);
+            } while (usedClassCodes.contains(classCode));
+            usedClassCodes.add(classCode);
+        }
+        else{
+            if (role.equals("Student")){
+            classCode = null;}
+            else{
+                return new ResponseEntity<>("The role has to be either 'Student' or 'Teacher'", HttpStatus.BAD_REQUEST);
+            }
+        }
+        
         // A Human object WITHOUT ID will create a new record with default roles as student
         Human human = new Human(email, password, name, dob, role);
+        human.setClassCode(classCode);
         repository.save(human);
-        return new ResponseEntity<>(email +" is created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(email +" created successfully", HttpStatus.CREATED);
     }
 
     /*
