@@ -51,13 +51,13 @@ public class Statistics {
     // email, password, roles are key attributes to login and authentication
     @NotEmpty
     @Column(unique=false)
-    private String SongCode;
+    private String SongCode;  // the song code, provided by spotify
 
     @NotEmpty
-    private Integer time;
+    private Integer time; // the time that the song was uploaded
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dob;
+    private Date dob;  //the date that the song was uploaded
 
     // To be implemented
     @ManyToMany(fetch = EAGER)
@@ -96,7 +96,7 @@ public class Statistics {
 
         // basics of class construction
         Statistics p1 = new Statistics();
-        p1.setSongCode("Thomas Edison");
+        p1.setSongCode("g2342tefasfdsad");
         p1.setTime(12490);
         // adding Note to notes collection
         try {  // All data that converts formats could fail
@@ -107,7 +107,7 @@ public class Statistics {
         }
 
         Statistics p2 = new Statistics();
-        p1.setSongCode("Thomas Edison");
+        p1.setSongCode("6gj839kbhyvfn478");
         p1.setTime(12490);
         // adding Note to notes collection
         try {  // All data that converts formats could fail
@@ -118,8 +118,8 @@ public class Statistics {
         }
 
         Statistics p3 = new Statistics();
-        p1.setSongCode("Thomas Edison");
-        p1.setTime(12490);
+        p1.setSongCode("7h58j439k9df2jn");
+        p1.setTime(121120);
         // adding Note to notes collection
         try {  // All data that converts formats could fail
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1840");
@@ -129,8 +129,8 @@ public class Statistics {
         }
 
         Statistics p4 = new Statistics();
-        p1.setSongCode("Thomas Edison");
-        p1.setTime(12490);
+        p1.setSongCode("67gykh832a09j2k");
+        p1.setTime(12389);
         // adding Note to notes collection
         try {  // All data that converts formats could fail
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1840");
@@ -140,8 +140,8 @@ public class Statistics {
         }
 
         Statistics p5 = new Statistics();
-        p1.setSongCode("Thomas Edison");
-        p1.setTime(12490);
+        p1.setSongCode("ubwinf8uh34f");
+        p1.setTime(1213590);
         // adding Note to notes collection
         try {  // All data that converts formats could fail
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1840");
