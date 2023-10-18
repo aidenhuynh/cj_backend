@@ -14,6 +14,10 @@ import com.nighthawk.spring_portfolio.mvc.person.Person;
 import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
 import com.nighthawk.spring_portfolio.mvc.song.Song;
 import com.nighthawk.spring_portfolio.mvc.song.SongJpaRepository;
+import com.nighthawk.spring_portfolio.mvc.statistics.Statistics;
+import com.nighthawk.spring_portfolio.mvc.statistics.StatisticsDetailsService;
+
+
 
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class ModelInit {
     @Autowired NoteJpaRepository noteRepo;
     @Autowired PersonDetailsService personService;
     @Autowired SongJpaRepository songRepo;
+    @Autowired StatisticsDetailsService statisticsService;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -51,6 +56,19 @@ public class ModelInit {
                     noteRepo.save(n);  // JPA Save                  
                 }
             }
+            Statistics[] statisticsArray = Statistics.init();
+            for (Statistics statistics : statisticsArray) {
+                //findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase
+                List<Statistics> statisticsFound = statisticsService.list(statistics.getDob(), statistics.getSongCode());  // lookup
+                if (statisticsFound.size() == 0) {
+                    statisticsService.save(statistics);  // save
+
+                    // Each "test person" starts with a "test note"
+                    String text = "Test " + statistics.getSongCode();
+                    Note n = new Note(text, statistics);  // constructor uses new person as Many-to-One association
+                    noteRepo.save(n);  // JPA Save                  
+                }
+            }
 
             String[] songArray = Song.init();
             for (String song : songArray) {
@@ -62,4 +80,9 @@ public class ModelInit {
         };
     }
 }
+
+
+
+
+
 
