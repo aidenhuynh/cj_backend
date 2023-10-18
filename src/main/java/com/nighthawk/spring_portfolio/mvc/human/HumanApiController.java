@@ -130,35 +130,5 @@ public class HumanApiController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    /*
-    The personStats API adds stats by Date to Person table 
-    */
-    @PostMapping(value = "/setStats", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Human> humanStats(@RequestBody final Map<String,Object> stat_map) {
-        // find ID
-        long id=Long.parseLong((String)stat_map.get("id"));  
-        Optional<Human> optional = repository.findById((id));
-        if (optional.isPresent()) {  // Good ID
-            Human human = optional.get();  // value from findByID
-
-            // Extract Attributes from JSON
-            Map<String, Object> attributeMap = new HashMap<>();
-            for (Map.Entry<String,Object> entry : stat_map.entrySet())  {
-                // Add all attribute other thaN "date" to the "attribute_map"
-                if (!entry.getKey().equals("date") && !entry.getKey().equals("id"))
-                    attributeMap.put(entry.getKey(), entry.getValue());
-            }
-
-            // Set Date and Attributes to SQL HashMap
-            Map<String, Map<String, Object>> date_map = new HashMap<>();
-            date_map.put( (String) stat_map.get("date"), attributeMap );
-            human.setStats(date_map);  // BUG, needs to be customized to replace if existing or append if new
-            repository.save(human);  // conclude by writing the stats updates
-
-            // return Person with update Stats
-            return new ResponseEntity<>(human, HttpStatus.OK);
-        }
-        // return Bad ID
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
-    }
+    
 }

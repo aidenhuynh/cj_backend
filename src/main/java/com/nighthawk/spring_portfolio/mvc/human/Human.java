@@ -81,9 +81,6 @@ public class Human {
         }
     }
     */
-    @Type(type="json")
-    @Column(columnDefinition = "jsonb")
-    private Map<String,Map<String, Object>> stats = new HashMap<>(); 
     
 
     // Constructor used when building object from an API
