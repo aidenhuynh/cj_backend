@@ -1,4 +1,4 @@
-package com.nighthawk.websocket.config;
+package com.nighthawk.spring_portfolio.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

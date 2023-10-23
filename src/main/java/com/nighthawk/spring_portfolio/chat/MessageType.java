@@ -1,4 +1,4 @@
-package com.nighthawk.websocket.chat;
+package com.nighthawk.spring_portfolio.chat;
 
 public enum MessageType {
     CHAT,

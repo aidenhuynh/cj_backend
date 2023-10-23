@@ -1,4 +1,4 @@
-package com.nighthawk.websocket.chat;
+package com.nighthawk.spring_portfolio.chat;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

@@ -1,4 +1,4 @@
-package com.nighthawk.websocket.chat;
+package com.nighthawk.spring_portfolio.chat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
