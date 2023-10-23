@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import com.nighthawk.spring_portfolio.mvc.jwt.JwtTokenUtil;
+
 import java.util.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -28,7 +30,8 @@ public class HumanApiController {
     @Autowired  // Inject PasswordEncoder
     private PasswordEncoder passwordEncoder;
     Set<String> usedClassCodes = new HashSet<>();
-    
+    @Autowired
+    private JwtTokenUtil jwtUtil;
 
     /*
     GET List of People
@@ -115,6 +118,7 @@ public class HumanApiController {
         return new ResponseEntity<>(email +" created successfully", HttpStatus.CREATED);
     }
 
+    
     /*
     The personSearch API looks across database for partial match to term (k,v) passed by RequestEntity body
      */

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nighthawk.spring_portfolio.mvc.human.Human;
+import com.nighthawk.spring_portfolio.mvc.human.HumanDetailsService;
 import com.nighthawk.spring_portfolio.mvc.person.Person;
 import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
 
@@ -30,10 +32,30 @@ public class JwtApiController {
 	@Autowired
 	private PersonDetailsService personDetailsService;
 
-	@PostMapping("/authenticate")
+	@Autowired 
+	private HumanDetailsService humanDetailsService;
+
+	@PostMapping("/person/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody Person authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 		final UserDetails userDetails = personDetailsService
+				.loadUserByUsername(authenticationRequest.getEmail());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		final ResponseCookie tokenCookie = ResponseCookie.from("jwt", token)
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(3600)
+			.sameSite("None; Secure")
+			// .domain("example.com") // Set to backend domain
+			.build();
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).build();
+	}
+
+	@PostMapping("/human/authenticate")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody Human authenticationRequest) throws Exception {
+		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+		final UserDetails userDetails = humanDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		final ResponseCookie tokenCookie = ResponseCookie.from("jwt", token)
