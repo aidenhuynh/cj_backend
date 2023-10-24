@@ -44,7 +44,7 @@ The last annotation connect to database
 @NoArgsConstructor
 @Entity
 @TypeDef(name="json", typeClass = JsonType.class)
-public class Human {
+public class Statistic {
 
     // automatic unique identifier for Person record
     @Id
@@ -53,22 +53,17 @@ public class Human {
 
     // email, password, roles are key attributes to login and authentication
     @NotEmpty
-    @Size(min=5)
-    @Column(unique=true)
-    @Email
-    private String email;
-
-    @NotEmpty
-    private String password;
+    private String songCode;
 
     // @NonNull, etc placed in params of constructor: "@NonNull @Size(min = 2, max = 30, message = "Name (2 to 30 chars)") String name"
     @NonNull
-    @Size(min = 2, max = 30, message = "Name (2 to 30 chars)")
+    @Size(min = 2, max = 40, message = "Name (2 to 40 chars)")
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date dob;
 
+    @NotEmpty
     private String classCode;
 
     @NonNull
@@ -84,32 +79,24 @@ public class Human {
     
 
     // Constructor used when building object from an API
-    public Human(String email, String password, String name, Date dob, String role) {
-        this.email = email;
-        this.password = password;
+    public Statistic(String songCode, String name, Date dob, String classCode, String role) {
+        this.songCode = songCode;
         this.name = name;
         this.dob = dob;
+        this.classCode = classCode;
         this.role = role;
         
     }
 
-    // A custom getter to return age from dob attribute
-    public int getAge() {
-        if (this.dob != null) {
-            LocalDate birthDay = this.dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            return Period.between(birthDay, LocalDate.now()).getYears(); }
-        return -1;
-    }
-
     // Initialize static test data 
-    public static Human[] init() {
+    public static Statistic[] init() {
 
         // basics of class construction
-        Human p1 = new Human();
-        p1.setName("Thomas Edison");
-        p1.setEmail("toby@gmail.com");
-        p1.setPassword("123Toby!");
-        p1.setRole("Teacher");
+        Statistic p1 = new Statistic();
+        p1.setName("AJ Ruiz");
+        p1.setSongCode("3K4HG9evC7dg3N0R9cYqk4");
+        p1.setClassCode("33214738144urethassq");
+        p1.setRole("Student");
         // adding Note to notes collection
         try {  // All data that converts formats could fail
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1840");
@@ -118,21 +105,21 @@ public class Human {
             // no actions as dob default is good enough
         }
 
-        Human p2 = new Human();
-        p2.setName("Alexander Graham Bell");
-        p2.setEmail("lexb@gmail.com");
-        p2.setPassword("123LexB!");
-        p2.setRole("Teacher");
+        Statistic p2 = new Statistic();
+        p2.setName("AJ Ruiz");
+        p2.setSongCode("3Z9ygRxfUsSTXccm7YfHtA");
+        p2.setClassCode("29104738291ureikdfsl");
+        p2.setRole("Student");
         try {
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1845");
             p2.setDob(d);
         } catch (Exception e) {
         }
 
-        Human p3 = new Human();
-        p3.setName("Nikola Tesla");
-        p3.setEmail("niko@gmail.com");
-        p3.setPassword("123Niko!");
+        Statistic p3 = new Statistic();
+        p3.setName("Hideous Kojingles");
+        p3.setSongCode("2rFXXOEuktZ1xk4vj42Nts");
+        p3.setClassCode("29104738291ureikdfsl");
         p3.setRole("Student");
         try {
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1850");
@@ -140,10 +127,10 @@ public class Human {
         } catch (Exception e) {
         }
 
-        Human p4 = new Human();
-        p4.setName("Madam Currie");
-        p4.setEmail("madam@gmail.com");
-        p4.setPassword("123Madam!");
+        Statistic p4 = new Statistic();
+        p4.setName("Asher Rivera");
+        p4.setSongCode("0Bo5fjMtTfCD8vHGebivqc");
+        p4.setClassCode("33214738144urethassq");
         p4.setRole("Student");
         try {
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1860");
@@ -151,11 +138,11 @@ public class Human {
         } catch (Exception e) {
         }
 
-        Human p5 = new Human();
-        p5.setName("John Mortensen");
-        p5.setEmail("jm1021@gmail.com");
-        p5.setPassword("123Qwerty!");
-        p5.setRole("Student");
+        Statistic p5 = new Statistic();
+        p5.setName("John Smith");
+        p5.setSongCode("3Qq7nbEvgBzhtsO2fMnXvf");
+        p5.setClassCode("14410143130smokemoke");
+        p5.setRole("Teacher");
         try {
             Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-21-1959");
             p5.setDob(d);
@@ -163,16 +150,16 @@ public class Human {
         }
 
         // Array definition and data initialization
-        Human persons[] = {p1, p2, p3, p4, p5};
+        Statistic persons[] = {p1, p2, p3, p4, p5};
         return(persons);
     }
 
     public static void main(String[] args) {
         // obtain Person from initializer
-        Human persons[] = init();
+        Statistic persons[] = init();
 
         // iterate using "enhanced for loop"
-        for( Human person : persons) {
+        for( Statistic person : persons) {
             System.out.println(person);  // print object
         }
     }
