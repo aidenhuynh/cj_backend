@@ -11,25 +11,25 @@ Extends the JpaRepository interface from Spring Data JPA.
 -- JpaRepository defines standard CRUD methodsaa
 -- Via JPA the developer can retrieve database from relational databases to Java objects and vice versa.
  */
-public interface HumanJpaRepository extends JpaRepository<Human, Long> {
-    Human findByEmail(String email);
+public interface StatisticJpaRepository extends JpaRepository<Statistic, Long> {
+    Statistic findByName(String name);
 
-    List<Human> findAllByOrderByNameAsc();
+    List<Statistic> findAllByOrderByNameAsc();
 
-    // JPA query, findBy does JPA magic with "Name", "Containing", "Or", "Email", "IgnoreCase"
-    List<Human> findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String name, String email);
+    // JPA query, findBy does JPA magic with "Name", "Containing", "Or", "SongCode", "IgnoreCase"
+    List<Statistic> findByNameContainingIgnoreCaseOrSongCodeContainingIgnoreCase(String name, String songCode);
 
     /* Custom JPA query articles, there are articles that show custom SQL as well
        https://springframework.guru/spring-data-jpa-query/
        https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
     */
-    Human findByEmailAndPassword(String email, String password);
+    Statistic findByNameAndClassCode(String name, String classCode);
 
     // Custom JPA query
     @Query(
-            value = "SELECT * FROM Human p WHERE p.name LIKE ?1 or p.email LIKE ?1",
+            value = "SELECT * FROM Statistic p WHERE p.name LIKE ?1 or p.songCode LIKE ?1",
             nativeQuery = true)
-    List<Human> findByLikeTermNative(String term);
+    List<Statistic> findByLikeTermNative(String term);
     /*
       https://www.baeldung.com/spring-data-jpa-query
     */

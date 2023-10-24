@@ -61,7 +61,7 @@ public class Statistic {
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date dob;
+    private Date dou;
 
     @NotEmpty
     private String classCode;
@@ -79,10 +79,10 @@ public class Statistic {
     
 
     // Constructor used when building object from an API
-    public Statistic(String songCode, String name, Date dob, String classCode, String role) {
+    public Statistic(String songCode, String name, Date dou, String classCode, String role) {
         this.songCode = songCode;
         this.name = name;
-        this.dob = dob;
+        this.dou = dou;
         this.classCode = classCode;
         this.role = role;
         
@@ -99,8 +99,8 @@ public class Statistic {
         p1.setRole("Student");
         // adding Note to notes collection
         try {  // All data that converts formats could fail
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1840");
-            p1.setDob(d);
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-01-2023 10:10");
+            p1.setDou(d);
         } catch (Exception e) {
             // no actions as dob default is good enough
         }
@@ -111,8 +111,8 @@ public class Statistic {
         p2.setClassCode("29104738291ureikdfsl");
         p2.setRole("Student");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1845");
-            p2.setDob(d);
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-11-2023 10:10");
+            p2.setDou(d);
         } catch (Exception e) {
         }
 
@@ -122,8 +122,8 @@ public class Statistic {
         p3.setClassCode("29104738291ureikdfsl");
         p3.setRole("Student");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1850");
-            p3.setDob(d);
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-02-2023 9:45");
+            p3.setDou(d);
         } catch (Exception e) {
         }
 
@@ -133,8 +133,8 @@ public class Statistic {
         p4.setClassCode("33214738144urethassq");
         p4.setRole("Student");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-1860");
-            p4.setDob(d);
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-20-2023 11:00");
+            p4.setDou(d);
         } catch (Exception e) {
         }
 
@@ -144,8 +144,8 @@ public class Statistic {
         p5.setClassCode("14410143130smokemoke");
         p5.setRole("Teacher");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-21-1959");
-            p5.setDob(d);
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-21-2023 4:00");
+            p5.setDou(d);
         } catch (Exception e) {
         }
 
