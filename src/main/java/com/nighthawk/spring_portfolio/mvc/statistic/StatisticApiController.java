@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -13,8 +12,8 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 
 @RestController
-@RequestMapping("/api/human")
-public class HumanApiController {
+@RequestMapping("/api/statistic")
+public class StatisticApiController {
     //     @Autowired
     // private JwtTokenUtil jwtGen;
     /*
@@ -24,9 +23,8 @@ public class HumanApiController {
 
     // Autowired enables Control to connect POJO Object through JPA
     @Autowired
-    private HumanJpaRepository repository;
+    private StatisticJpaRepository repository;
     @Autowired  // Inject PasswordEncoder
-    private PasswordEncoder passwordEncoder;
     Set<String> usedClassCodes = new HashSet<>();
     
 
@@ -34,7 +32,7 @@ public class HumanApiController {
     GET List of People
      */
     @GetMapping("/")
-    public ResponseEntity<List<Human>> getPeople() {
+    public ResponseEntity<List<Statistic>> getPeople() {
         return new ResponseEntity<>( repository.findAllByOrderByNameAsc(), HttpStatus.OK);
     }
 
@@ -42,12 +40,12 @@ public class HumanApiController {
     GET individual Human using ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Human> getHuman(@PathVariable long id) {
+    public ResponseEntity<Statistic> getHuman(@PathVariable long id) {
         
-        Optional<Human> optional = repository.findById(id);
+        Optional<Statistic> optional = repository.findById(id);
         if (optional.isPresent()) {  // Good ID
-            Human human = optional.get();  // value from findByID
-            return new ResponseEntity<>(human, HttpStatus.OK);  // OK HTTP response: status code, headers, and body
+            Statistic statistic = optional.get();  // value from findByID
+            return new ResponseEntity<>(statistic, HttpStatus.OK);  // OK HTTP response: status code, headers, and body
         }
         // Bad ID
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);       
@@ -57,12 +55,12 @@ public class HumanApiController {
     DELETE individual Person using ID
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Human> deleteHuman(@PathVariable long id) {
-        Optional<Human> optional = repository.findById(id);
+    public ResponseEntity<Statistic> deleteStatistic(@PathVariable long id) {
+        Optional<Statistic> optional = repository.findById(id);
         if (optional.isPresent()) {  // Good ID
-            Human human = optional.get();  // value from findByID
+            Statistic statistic = optional.get();  // value from findByID
             repository.deleteById(id);  // value from findByID
-            return new ResponseEntity<>(human, HttpStatus.OK);  // OK HTTP response: status code, headers, and body
+            return new ResponseEntity<>(statistic, HttpStatus.OK);  // OK HTTP response: status code, headers, and body
         }
         // Bad ID
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
@@ -72,23 +70,21 @@ public class HumanApiController {
     POST Aa record by Requesting Parameters from URI
      */
     @PostMapping( "/post")
-    public ResponseEntity<Object> postHuman(@RequestParam("email") String email,
-                                             @RequestParam("password") String password,
+    public ResponseEntity<Object> postStatistic(@RequestParam("songCode") String songCode,
                                              @RequestParam("name") String name,
-                                             @RequestParam("dob") String dobString,
+                                             @RequestParam("dou") String douString,
+                                             @RequestParam("classCode") String classCode,
                                              @RequestParam("role") String role) {
-        Date dob;
+        Date dou;
         try {
-            dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
+            dou = new SimpleDateFormat("MM-dd-yyyy").parse(douString);
         } catch (Exception e) {
-            return new ResponseEntity<>(dobString +" error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(douString +" error; try MM-dd-yyyy HH:mm", HttpStatus.BAD_REQUEST);
         }
-        password = passwordEncoder.encode(password);
-        List<Human> humans = repository.findAll();
-        for (Human hman : humans){
-            usedClassCodes.add(hman.getClassCode());
+        List<Statistic> statistics = repository.findAll();
+        for (Statistic oneStatistic : statistics){
+            usedClassCodes.add(oneStatistic.getClassCode());
         }
-        String classCode = "";  
         if (role.equals("Teacher")){
 
             int CODE_LENGTH = 6; 
@@ -109,22 +105,22 @@ public class HumanApiController {
         }
         
         // A Human object WITHOUT ID will create a new record with default roles as student
-        Human human = new Human(email, password, name, dob, role);
-        human.setClassCode(classCode);
-        repository.save(human);
-        return new ResponseEntity<>(email +" created successfully", HttpStatus.CREATED);
+        Statistic statistic = new Statistic(songCode, name, dou, classCode, role);
+        statistic.setClassCode(classCode);
+        repository.save(statistic);
+        return new ResponseEntity<>(name +" created successfully", HttpStatus.CREATED);
     }
 
     /*
     The personSearch API looks across database for partial match to term (k,v) passed by RequestEntity body
      */
     @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> humanSearch(@RequestBody final Map<String,String> map) {
+    public ResponseEntity<Object> statisticSearch(@RequestBody final Map<String,String> map) {
         // extract term from RequestEntity
         String term = (String) map.get("term");
 
         // JPA query to filter on term
-        List<Human> list = repository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(term, term);
+        List<Statistic> list = repository.findByNameContainingIgnoreCaseOrSongCodeContainingIgnoreCase(term, term);
 
         // return resulting list and status, error checking should be added
         return new ResponseEntity<>(list, HttpStatus.OK);
