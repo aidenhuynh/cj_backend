@@ -65,8 +65,8 @@ public class JwtApiController {
 			.maxAge(3600)
 			.sameSite("None; Secure")
 			// .domain("example.com") // Set to backend domain
-			.build();
-		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).build();
+			.build();	
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).body(new TokenResponse(token));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
@@ -78,6 +78,18 @@ public class JwtApiController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		} catch (Exception e) {
 			throw new Exception(e);
+		}
+	}
+
+	public class TokenResponse {
+		private final String token;
+	
+		public TokenResponse(String token) {
+			this.token = token;
+		}
+	
+		public String getToken() {
+			return token;
 		}
 	}
 }

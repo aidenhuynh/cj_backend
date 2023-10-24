@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
+@Transactional
 public class HumanDetailsService  implements UserDetailsService{
     @Autowired  // Inject PersonJpaRepository
     private HumanJpaRepository humanJpaRepository;
