@@ -29,7 +29,12 @@ public class HumanDetailsService  implements UserDetailsService{
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         String role = human.getRole();
+        System.out.println(role);
         authorities.add(new SimpleGrantedAuthority(role));
+        System.out.println("Authorities:");
+        for (SimpleGrantedAuthority authority : authorities) {
+            System.out.println(authority.getAuthority());
+        }
         // train spring security to User and Authorities
         return new org.springframework.security.core.userdetails.User(human.getEmail(), human.getPassword(), authorities);
     }
