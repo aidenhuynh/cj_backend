@@ -99,7 +99,7 @@ public class Statistic {
         p1.setRole("Student");
         // adding Note to notes collection
         try {  // All data that converts formats could fail
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-01-2023 10:10");
+            Date d = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse("10-01-2023 10:10");
             p1.setDou(d);
         } catch (Exception e) {
             // no actions as dob default is good enough
@@ -111,7 +111,7 @@ public class Statistic {
         p2.setClassCode("29104738291ureikdfsl");
         p2.setRole("Student");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-11-2023 10:10");
+            Date d = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse("10-11-2023 10:10");
             p2.setDou(d);
         } catch (Exception e) {
         }
@@ -122,7 +122,7 @@ public class Statistic {
         p3.setClassCode("29104738291ureikdfsl");
         p3.setRole("Student");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-02-2023 9:45");
+            Date d = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse("10-02-2023 9:45");
             p3.setDou(d);
         } catch (Exception e) {
         }
@@ -133,7 +133,7 @@ public class Statistic {
         p4.setClassCode("33214738144urethassq");
         p4.setRole("Student");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-20-2023 11:00");
+            Date d = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse("10-20-2023 11:00");
             p4.setDou(d);
         } catch (Exception e) {
         }
@@ -144,7 +144,7 @@ public class Statistic {
         p5.setClassCode("14410143130smokemoke");
         p5.setRole("Teacher");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-21-2023 4:00");
+            Date d = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse("10-21-2023 4:00");
             p5.setDou(d);
         } catch (Exception e) {
         }

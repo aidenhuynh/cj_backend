@@ -77,7 +77,7 @@ public class StatisticApiController {
                                              @RequestParam("role") String role) {
         Date dou;
         try {
-            dou = new SimpleDateFormat("MM-dd-yyyy").parse(douString);
+            dou = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse(douString);
         } catch (Exception e) {
             return new ResponseEntity<>(douString +" error; try MM-dd-yyyy HH:mm", HttpStatus.BAD_REQUEST);
         }
