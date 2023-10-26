@@ -25,7 +25,7 @@ public class StatisticApiController {
     @Autowired
     private StatisticJpaRepository repository;
     @Autowired  // Inject PasswordEncoder
-    Set<String> usedClassCodes = new HashSet<>();
+    public static Set<String> usedClassCodes = new HashSet<>();
     
 
     /*
