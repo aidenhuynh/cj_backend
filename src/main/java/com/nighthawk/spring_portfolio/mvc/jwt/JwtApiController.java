@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nighthawk.spring_portfolio.mvc.human.Human;
+import com.nighthawk.spring_portfolio.mvc.human.HumanDetailsService;
 import com.nighthawk.spring_portfolio.mvc.person.Person;
 import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://127.0.0.1:4100")
 public class JwtApiController {
 
 	@Autowired
@@ -30,7 +32,10 @@ public class JwtApiController {
 	@Autowired
 	private PersonDetailsService personDetailsService;
 
-	@PostMapping("/authenticate")
+	@Autowired 
+	private HumanDetailsService humanDetailsService;
+
+	@PostMapping("/person/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody Person authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 		final UserDetails userDetails = personDetailsService
@@ -47,6 +52,23 @@ public class JwtApiController {
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).build();
 	}
 
+	@PostMapping("/human/authenticate")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody Human authenticationRequest) throws Exception {
+		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+		final UserDetails userDetails = humanDetailsService
+				.loadUserByUsername(authenticationRequest.getEmail());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		final ResponseCookie tokenCookie = ResponseCookie.from("jwt", token)
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(3600)
+			.sameSite("None; Secure")
+			// .domain("example.com") // Set to backend domain
+			.build();	
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).body(new TokenResponse(token));
+	}
+
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -56,6 +78,18 @@ public class JwtApiController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		} catch (Exception e) {
 			throw new Exception(e);
+		}
+	}
+
+	public class TokenResponse {
+		private final String token;
+	
+		public TokenResponse(String token) {
+			this.token = token;
+		}
+	
+		public String getToken() {
+			return token;
 		}
 	}
 }

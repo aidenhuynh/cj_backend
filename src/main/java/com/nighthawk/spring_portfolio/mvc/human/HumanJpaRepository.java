@@ -14,6 +14,8 @@ Extends the JpaRepository interface from Spring Data JPA.
 public interface HumanJpaRepository extends JpaRepository<Human, Long> {
     Human findByEmail(String email);
 
+    List<Human> findByRole(String role);
+
     List<Human> findAllByOrderByNameAsc();
 
     // JPA query, findBy does JPA magic with "Name", "Containing", "Or", "Email", "IgnoreCase"
