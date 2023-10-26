@@ -15,7 +15,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nighthawk.spring_portfolio.mvc.person.Person;
-import com.nighthawk.spring_portfolio.mvc.statistics.Statistics;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,15 +38,10 @@ public class Note {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Person person;
-    private Statistics statistics;
 
     public Note(String text, Person person) {
         this.text = text;
         this.person = person;
-    }
-    public Note(String text, Statistics statistics) {
-        this.text = text;
-        this.statistics = statistics;
     }
 
 
