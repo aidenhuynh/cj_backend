@@ -14,10 +14,10 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
-    
+
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("https://cj-backend.stu.nighthawkcodingsociety.com/")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
