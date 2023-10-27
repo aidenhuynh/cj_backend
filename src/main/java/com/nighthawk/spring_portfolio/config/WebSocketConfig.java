@@ -14,15 +14,9 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
-
-    @Bean
-    public DefaultHandshakeHandler handshakeHandler() {
-        return new DefaultHandshakeHandler(new TomcatRequestUpgradeStrategy());
-    }
-
+    
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setHandshakeHandler(handshakeHandler())
                 .setAllowedOrigins("https://cj-backend.stu.nighthawkcodingsociety.com/")
                 .withSockJS();
     }
