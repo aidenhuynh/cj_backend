@@ -1,9 +1,10 @@
 package com.nighthawk.spring_portfolio;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nighthawk.spring_portfolio.mvc.human.HumanDetailsService;
 import com.nighthawk.spring_portfolio.mvc.jwt.JwtAuthenticationEntryPoint;
 import com.nighthawk.spring_portfolio.mvc.jwt.JwtRequestFilter;
-import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
-	private PersonDetailsService personDetailsService;
+	private HumanDetailsService humanDetailsService;
 
     @Bean  // Sets up password encoding style
     PasswordEncoder passwordEncoder(){
@@ -50,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// configure AuthenticationManager so that it knows from where to load
 		// user for matching credentials
 		// Use BCryptPasswordEncoder
-		auth.userDetailsService(personDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(humanDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Override
@@ -70,11 +71,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/mvc/person/update/**", "/mvc/person/delete/**").permitAll()
 				.antMatchers("/api/person/**").permitAll()
+				.antMatchers("/api/human/delete/**").hasAuthority("Teacher")
 				.and()
 			// support cors
 			.cors().and()
 			.headers()
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origins", "*"))
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type", "Authorization", "x-csrf-token"))
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))

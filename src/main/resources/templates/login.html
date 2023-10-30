@@ -1,52 +1,53 @@
-<!-- This page is illustrative and contains ideas about HTML formatting -->
-<!DOCTYPE HTML>
-<!-- Signals to the Layout Dialect which layout should be used to decorate this View -->
-<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-      layout:decorate="~{layouts/base}" lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
-    <!-- Page specific head additions -->
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Spring Boot WebSocket Chat Application</title>
+    <link rel="stylesheet" href="/css/main.css" />
 </head>
-
 <body>
-<th:block layout:fragment="body" th:remove="tag">
+<noscript>
+    <h2>Sorry! Your browser doesn't support Javascript</h2>
+</noscript>
 
-    <div class="container py-4">
-        <header class="pb-3 mb-4 border-bottom border-primary text-dark">
-            <span class="fs-4">Login Page</span>
-        </header>
-    </div>
-
-    <div class="container py-4 text-light bg-success">
-
-        <div class="container bg-secondary py-4">
-            <div class="p-5 mb-4 bg-light text-dark rounded-3">
-                <h1>Login</h1>
-                <label for="email">Username:</label><br>
-                <input type="text" id="username" name="username"><br>
-                <label for="password">Password:</label><br>
-                <input type="text" id="password" name="password"><br><br>
-                <input type="submit" value="Login" onclick="login()">
-                <p id="message"></p>
+<div id="username-page">
+    <div class="username-page-container">
+        <h1 class="title">Type your username to enter the Chatroom</h1>
+        <form id="usernameForm" name="usernameForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control" />
             </div>
-        </div>
-        <script>
-            function login() {
-                var email = document.getElementById('username').value;
-                var password = document.getElementById('password').value;
-                var data = {email:email, password:password};
-                fetch("/authenticate", {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then((data) => {
-                    if (data.status == 200) {
-                        window.location.replace("/mvc/person/read");
-                    } else {
-                        document.getElementById('message').innerHTML = "Invalid email or password"
-                    }
-                });
-            }
-        </script>
-
+            <div class="form-group">
+                <button type="submit" class="accent username-submit">Start Chatting</button>
+            </div>
+        </form>
     </div>
+</div>
 
-</th:block>
+<div id="chat-page" class="hidden">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Spring WebSocket Chat Demo - By Alibou</h2>
+        </div>
+        <div class="connecting">
+            Connecting...
+        </div>
+        <ul id="messageArea">
+
+        </ul>
+        <form id="messageForm" name="messageForm">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                    <button type="submit" class="primary">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/main.js"></script>
 </body>
+</html>
