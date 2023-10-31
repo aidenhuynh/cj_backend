@@ -17,7 +17,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("https://nighthawkcoders.github.io", "https://cj-backend.stu.nighthawkcodingsociety.com","http://localhost:4000", "https://toby-leeder.github.io")
+                .setAllowedOrigins("https://nighthawkcoders.github.io", "https://cj-backend.stu.nighthawkcodingsociety.com","http://localhost:4000", "https://toby-leeder.github.io", "https://classroomjukebox.com/")
                 .withSockJS();
     }
 
