@@ -23,6 +23,14 @@ import com.nighthawk.spring_portfolio.mvc.person.Person;
 import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
 import com.nighthawk.spring_portfolio.mvc.song.Song;
 import com.nighthawk.spring_portfolio.mvc.song.SongJpaRepository;
+import com.nighthawk.spring_portfolio.mvc.statistic.Statistic;
+import com.nighthawk.spring_portfolio.mvc.statistic.StatisticJpaRepository;
+import com.nighthawk.spring_portfolio.mvc.statistic.StatisticApiController;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.List;
+import java.util.Set;
 
 @Component
 @Configuration // Scans Application for ModelInit Bean, this detects CommandLineRunner
@@ -31,6 +39,7 @@ public class ModelInit {
     @Autowired NoteJpaRepository noteRepo;
     @Autowired PersonDetailsService personService;
     @Autowired SongJpaRepository songRepo;
+    @Autowired StatisticJpaRepository statisticRepo;
     @Autowired HumanJpaRepository humanRepo;
     @Autowired  // Inject PasswordEncoder
     private PasswordEncoder passwordEncoder;
@@ -60,6 +69,29 @@ public class ModelInit {
                     String text = "Test " + person.getEmail();
                     Note n = new Note(text, person);  // constructor uses new person as Many-to-One association
                     noteRepo.save(n);  // JPA Save                  
+                }
+            }
+            Statistic[] statisticArray = Statistic.init();
+            Set<String> usedClassCodes2 = StatisticApiController.usedClassCodes;
+            for (Statistic statistic : statisticArray){
+                List<Statistic> statisticFound = statisticRepo.findByNameContainingIgnoreCaseOrSongCodeContainingIgnoreCase(statistic.getName(), statistic.getSongCode());
+                if (statisticFound.size() == 0){
+                    if(statistic.getRole() == "Teacher"){
+                        String classCode = "";  
+                        if (statistic.getClassCode() == null || classCode.length() == 0 ){
+                            int CODE_LENGTH = 6; 
+                            SecureRandom random = new SecureRandom();
+                            BigInteger randomBigInt;
+                            do {
+                                randomBigInt = new BigInteger(50, random);
+                                classCode = randomBigInt.toString(32).toUpperCase().substring(0, CODE_LENGTH);
+                            } while (usedClassCodes2.contains(classCode));
+                            usedClassCodes2.add(classCode);
+                        }
+                        statistic.setClassCode(classCode);
+                    }
+                    
+                    statisticRepo.save(statistic);
                 }
             }
 
@@ -97,4 +129,9 @@ public class ModelInit {
         };
     }
 }
+
+
+
+
+
 
