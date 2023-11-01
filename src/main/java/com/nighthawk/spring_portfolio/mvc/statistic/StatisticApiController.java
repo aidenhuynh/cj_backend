@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping("/api/statistic")
+@CrossOrigin(origins = "http://127.0.0.1:4100")
 public class StatisticApiController {
     //     @Autowired
     // private JwtTokenUtil jwtGen;
