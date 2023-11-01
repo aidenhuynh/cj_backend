@@ -67,15 +67,7 @@ public class Statistic {
     private String classCode;
 
     @NonNull
-    private String role;
-    /* HashMap is used to store JSON for daily "stats"
-    "stats": {
-        "2022-11-13": {
-            "calories": 2200,
-            "steps": 8000
-        }
-    }
-    */
+    private String role; // student or teacher
     
 
     // Constructor used when building object from an API
