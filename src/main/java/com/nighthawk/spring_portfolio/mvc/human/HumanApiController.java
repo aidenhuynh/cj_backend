@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.nighthawk.spring_portfolio.mvc.jwt.JwtTokenUtil;
+import com.nighthawk.spring_portfolio.mvc.statistic.Statistic;
+import com.nighthawk.spring_portfolio.mvc.statistic.StatisticJpaRepository;
 
 import java.util.*;
 import java.math.BigInteger;
@@ -27,9 +29,10 @@ public class HumanApiController {
     // Autowired enables Control to connect POJO Object through JPA
     @Autowired
     private HumanJpaRepository repository;
+    @Autowired StatisticJpaRepository statisticRepo;
     @Autowired  // Inject PasswordEncoder
     private PasswordEncoder passwordEncoder;
-    Set<String> usedClassCodes = new HashSet<>();
+    public static Set<String> usedClassCodes = new HashSet<>();
     @Autowired
     private JwtTokenUtil jwtUtil;
 
@@ -115,6 +118,11 @@ public class HumanApiController {
         Human human = new Human(email, password, name, dob, role);
         human.setClassCode(classCode);
         repository.save(human);
+
+        Statistic stat = new Statistic();
+        stat.setClassCode(classCode);
+        stat.setName(name);
+        
         return new ResponseEntity<>(email +" created successfully", HttpStatus.CREATED);
     }
 

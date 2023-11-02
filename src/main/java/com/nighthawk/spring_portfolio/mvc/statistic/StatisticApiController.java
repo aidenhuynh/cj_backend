@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import com.nighthawk.spring_portfolio.mvc.human.HumanApiController;
 
 import java.util.*;
 import java.math.BigInteger;
@@ -25,8 +28,12 @@ public class StatisticApiController {
     // Autowired enables Control to connect POJO Object through JPA
     @Autowired
     private StatisticJpaRepository repository;
-    @Autowired  // Inject PasswordEncoder
-    public static Set<String> usedClassCodes = new HashSet<>();
+    @Autowired
+    private HumanApiController humanApiController;
+
+    Set<String> usedClassCodes = HumanApiController.usedClassCodes;
+
+
     
 
     /*
@@ -70,47 +77,39 @@ public class StatisticApiController {
     /*
     POST Aa record by Requesting Parameters from URI
      */
-    @PostMapping( "/post")
-    public ResponseEntity<Object> postStatistic(@RequestParam("songCode") String songCode,
-                                             @RequestParam("name") String name,
-                                             @RequestParam("dou") String douString,
-                                             @RequestParam("classCode") String classCode,
-                                             @RequestParam("role") String role) {
-        Date dou;
-        try {
-            dou = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse(douString);
-        } catch (Exception e) {
-            return new ResponseEntity<>(douString +" error; try MM-dd-yyyy HH:mm", HttpStatus.BAD_REQUEST);
-        }
-        List<Statistic> statistics = repository.findAll();
-        for (Statistic oneStatistic : statistics){
-            usedClassCodes.add(oneStatistic.getClassCode());
-        }
-        if (role.equals("Teacher")){
+    // @PostMapping( "/post")
+    // public ResponseEntity<Object> postStatistic(@RequestParam("name") String name,
+    //                                          @RequestParam("classCode") String classCode) {
 
-            int CODE_LENGTH = 6; 
-            SecureRandom random = new SecureRandom();
-            BigInteger randomBigInt;
-            do {
-                randomBigInt = new BigInteger(50, random);
-                classCode = randomBigInt.toString(32).toUpperCase().substring(0, CODE_LENGTH);
-            } while (usedClassCodes.contains(classCode));
-            usedClassCodes.add(classCode);
-        }
-        else{
-            if (role.equals("Student")){
-            classCode = null;}
-            else{
-                return new ResponseEntity<>("The role has to be either 'Student' or 'Teacher'", HttpStatus.BAD_REQUEST);
-            }
-        }
+    //     List<Statistic> statistics = repository.findAll();
+    //     for (Statistic oneStatistic : statistics){
+    //         usedClassCodes.add(oneStatistic.getClassCode());
+    //     }
+    //     if (role.equals("Teacher")){
+
+    //         int CODE_LENGTH = 6; 
+    //         SecureRandom random = new SecureRandom();
+    //         BigInteger randomBigInt;
+    //         do {
+    //             randomBigInt = new BigInteger(50, random);
+    //             classCode = randomBigInt.toString(32).toUpperCase().substring(0, CODE_LENGTH);
+    //         } while (usedClassCodes.contains(classCode));
+    //         usedClassCodes.add(classCode);
+    //     }
+    //     else{
+    //         if (role.equals("Student")){
+    //         classCode = null;}
+    //         else{
+    //             return new ResponseEntity<>("The role has to be either 'Student' or 'Teacher'", HttpStatus.BAD_REQUEST);
+    //         }
+    //     }
         
-        // A Human object WITHOUT ID will create a new record with default roles as student
-        Statistic statistic = new Statistic(songCode, name, dou, classCode, role);
-        statistic.setClassCode(classCode);
-        repository.save(statistic);
-        return new ResponseEntity<>(name +" created successfully", HttpStatus.CREATED);
-    }
+    //     // A Human object WITHOUT ID will create a new record with default roles as student
+    //     Statistic statistic = new Statistic(songCode, name, dou, classCode, role);
+    //     statistic.setClassCode(classCode);
+    //     repository.save(statistic);
+    //     return new ResponseEntity<>(name +" created successfully", HttpStatus.CREATED);
+    // }
 
     /*
     The personSearch API looks across database for partial match to term (k,v) passed by RequestEntity body
